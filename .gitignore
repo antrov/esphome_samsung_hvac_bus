@@ -11,3 +11,7 @@ CMakeLists.txt
 .gitignore
 esp.yaml
 secrets.yaml
+.DS_Store
+
+# Private config
+esphome_samsung_hvac_bus.yaml
