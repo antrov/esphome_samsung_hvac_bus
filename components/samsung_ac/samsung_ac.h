@@ -133,6 +133,12 @@ namespace esphome
                                  { dev->update_target_water_temperature(value); });
       }
 
+      void set_heating_curve_shift(const std::string address, float value) override
+      {
+        execute_if_device_exists(address, [value](Samsung_AC_Device *dev)
+                                 { dev->update_heating_curve_shift(value); });
+      }
+
       void set_power(const std::string address, bool value) override
       {
         execute_if_device_exists(address, [value](Samsung_AC_Device *dev)

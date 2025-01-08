@@ -443,6 +443,13 @@ namespace esphome
                 packet.messages.push_back(targetwatertemp);
             }
 
+            if (request.heating_curve_shift)
+            {
+                MessageSet heatingcurveshift(MessageNumber::VAR_in_heating_curve_shift_f);
+                heatingcurveshift.value = request.heating_curve_shift.value() * 10.0;
+                packet.messages.push_back(heatingcurveshift);
+            }
+
             if (request.fan_mode)
             {
                 MessageSet fanmode(MessageNumber::ENUM_in_fan_mode);
@@ -614,6 +621,13 @@ namespace esphome
                 double temp = (double)message.value / (double)10;
                 LOG_MESSAGE(VAR_in_temp_water_heater_target_f, temp, source, dest);
                 target->set_target_water_temperature(source, temp);
+                break;
+            }
+            case MessageNumber::VAR_in_heating_curve_shift_f: // unit = 'Celsius'
+            {
+                double temp = (double)message.value / (double)10;
+                LOG_MESSAGE(VAR_in_heating_curve_shift_f, temp, source, dest);
+                target->set_heating_curve_shift(source, temp);
                 break;
             }
             case MessageNumber::ENUM_in_state_humidity_percent:

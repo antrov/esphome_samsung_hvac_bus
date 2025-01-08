@@ -115,6 +115,7 @@ namespace esphome
       Samsung_AC_Number *target_temperature{nullptr};
       Samsung_AC_Number *water_outlet_target{nullptr};
       Samsung_AC_Number *target_water_temperature{nullptr};
+      Samsung_AC_Number *heating_curve_shift{nullptr};
       Samsung_AC_Switch *power{nullptr};
       Samsung_AC_Switch *automatic_cleaning{nullptr};
       Samsung_AC_Switch *water_heater_power{nullptr};
@@ -298,7 +299,18 @@ namespace esphome
         target_water_temperature->write_state_ = [this](float value)
         {
           ProtocolRequest request;
-          request.target_water_temp = value;
+          request.heating_curve_shift = value;
+          publish_request(request);
+        };
+      };
+
+      void set_heating_curve_shift_number(Samsung_AC_Number *number)
+      {
+        heating_curve_shift = number;
+        heating_curve_shift->write_state_ = [this](float value)
+        {
+          ProtocolRequest request;
+          request.heating_curve_shift = value;
           publish_request(request);
         };
       };
@@ -330,6 +342,12 @@ namespace esphome
       {
         if (target_water_temperature != nullptr)
           target_water_temperature->publish_state(value);
+      }
+
+      void update_heating_curve_shift(float value)
+      {
+        if (heating_curve_shift != nullptr)
+          heating_curve_shift->publish_state(value);
       }
 
       optional<bool> _cur_power;

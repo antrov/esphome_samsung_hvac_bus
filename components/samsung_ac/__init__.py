@@ -250,15 +250,7 @@ DEVICE_SCHEMA = cv.Schema(
         # keep CUSTOM_SENSOR_KEYS in sync with these
         cv.Optional(CONF_DEVICE_WATER_TEMPERATURE): temperature_sensor_schema(0x4237),
         cv.Optional(CONF_DEVICE_ROOM_HUMIDITY): humidity_sensor_schema(0x4038),
-        cv.Optional(CONF_DEVICE_HEATING_CURVE_SHIFT): custom_sensor_schema(
-            message=0x4248,
-            icon="mdi:chart-bell-curve-cumulative",
-            unit_of_measurement=UNIT_CELSIUS,
-            accuracy_decimals=1,
-            device_class=DEVICE_CLASS_TEMPERATURE,
-            state_class=STATE_CLASS_MEASUREMENT,
-            raw_filters=[{"lambda": Lambda("return (int16_t)x;")}, {"multiply": 0.1}],
-        ),
+        cv.Optional(CONF_DEVICE_HEATING_CURVE_SHIFT): NUMBER_SCHEMA,
         cv.Optional(
             CONF_DEVICE_OUT_CONTROL_WATTMETER_ALL_UNIT_ACCUM
         ): sensor.sensor_schema(
@@ -314,7 +306,6 @@ DEVICE_SCHEMA = cv.Schema(
 CUSTOM_SENSOR_KEYS = [
     CONF_DEVICE_WATER_TEMPERATURE,
     CONF_DEVICE_ROOM_HUMIDITY,
-    CONF_DEVICE_HEATING_CURVE_SHIFT,
 ]
 
 CONF_DEVICES = "devices"
@@ -493,6 +484,15 @@ async def to_code(config):
                 conf, min_value=30.0, max_value=70.0, step=0.5
             )
             cg.add(var_dev.set_target_water_temperature_number(num))
+
+        if CONF_DEVICE_HEATING_CURVE_SHIFT in device:
+            conf = device[CONF_DEVICE_HEATING_CURVE_SHIFT]
+            conf[CONF_UNIT_OF_MEASUREMENT] = UNIT_CELSIUS
+            conf[CONF_DEVICE_CLASS] = DEVICE_CLASS_TEMPERATURE
+            num = await number.new_number(
+                conf, min_value=-5.0, max_value=5.0, step=0.5
+            )
+            cg.add(var_dev.set_heating_curve_shift_number(num))
 
         if CONF_DEVICE_TARGET_TEMPERATURE in device:
             conf = device[CONF_DEVICE_TARGET_TEMPERATURE]

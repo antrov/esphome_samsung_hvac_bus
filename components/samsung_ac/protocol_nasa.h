@@ -86,6 +86,7 @@ namespace esphome
             VAR_in_temp_water_tank_f = 0x4237,
             VAR_out_sensor_airout = 0x8204,
             VAR_in_temp_water_heater_target_f = 0x4235,
+            VAR_in_heating_curve_shift_f = 0x4248,
             VAR_in_temp_eva_in_f = 0x4205,
             VAR_in_temp_eva_out_f = 0x4206,
             VAR_out_error_code = 0x8235,

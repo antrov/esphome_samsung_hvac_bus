@@ -586,6 +586,7 @@ namespace esphome
                    target->set_water_outlet_target(nonpacket_.src, false);
                    // TODO
                    target->set_target_water_temperature(nonpacket_.src, false);
+                   target->set_heating_curve_shift(nonpacket_.src, false);
                    target->set_room_temperature(nonpacket_.src, nonpacket_.command20.room_temp);
                    target->set_power(nonpacket_.src, nonpacket_.command20.power);
                    // TODO
