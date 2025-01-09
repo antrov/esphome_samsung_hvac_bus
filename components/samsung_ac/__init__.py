@@ -11,6 +11,7 @@ from esphome.const import (
     DEVICE_CLASS_HUMIDITY,
     DEVICE_CLASS_VOLTAGE,
     DEVICE_CLASS_CURRENT,
+    DEVICE_CLASS_WATER,
     UNIT_CELSIUS,
     UNIT_PERCENT,
     UNIT_WATT,
@@ -50,6 +51,8 @@ NUMBER_SCHEMA = number.NUMBER_SCHEMA.extend(
     {cv.GenerateID(): cv.declare_id(Samsung_AC_Number)}
 )
 
+
+
 CLIMATE_SCHEMA = climate.CLIMATE_SCHEMA.extend(
     {cv.GenerateID(): cv.declare_id(Samsung_AC_Climate)}
 )
@@ -81,6 +84,10 @@ CONF_DEVICE_OUT_CONTROL_WATTMETER_ALL_UNIT_ACCUM = "outdoor_instantaneous_power"
 CONF_DEVICE_OUT_CONTROL_WATTMETER_1W_1MIN_SUM = "outdoor_cumulative_energy"
 CONF_DEVICE_OUT_SENSOR_CT1 = "outdoor_current"
 CONF_DEVICE_OUT_SENSOR_VOLTAGE = "outdoor_voltage"
+CONF_DEVICE_IN_FLOW_SENSOR_CALC = "flow"
+CONF_DEVICE_IN_TEMP_WATER_OUTLET_ZONE1 = "water_outlet_zone1_temperature"
+CONF_DEVICE_IN_TEMP_WATER_OUTLET_ZONE2 = "water_outlet_zone2_temperature"
+CONF_DEVICE_IN_3WAY_VALVE = "3way_valve"
 
 
 CONF_CAPABILITIES = "capabilities"
@@ -167,7 +174,6 @@ def custom_sensor_schema(
             ): sensor.validate_filters,
         }
     )
-
 
 def temperature_sensor_schema(message: int):
     return custom_sensor_schema(
@@ -300,12 +306,57 @@ DEVICE_SCHEMA = cv.Schema(
                 cv.Optional(CONF_DEVICE_CUSTOM_MESSAGE, default=0x24FC): cv.hex_int,
             }
         ),
+        cv.Optional(CONF_DEVICE_IN_FLOW_SENSOR_CALC): sensor.sensor_schema(
+            unit_of_measurement="lpm",
+            accuracy_decimals=1,
+            device_class=DEVICE_CLASS_WATER,
+            state_class=STATE_CLASS_MEASUREMENT,
+            icon="mdi:pump",
+        ).extend(
+            {
+                cv.Optional(CONF_DEVICE_CUSTOM_MESSAGE, default=0x42e9): cv.hex_int,
+                cv.Optional(
+                    CONF_FILTERS, default=[{"multiply": 0.1}]
+                ): sensor.validate_filters
+            }
+        ),
+        cv.Optional(CONF_DEVICE_IN_TEMP_WATER_OUTLET_ZONE1): sensor.sensor_schema(
+            unit_of_measurement=UNIT_CELSIUS,
+            accuracy_decimals=1,
+            device_class=DEVICE_CLASS_WATER,
+            state_class=STATE_CLASS_MEASUREMENT,
+            icon="mdi:thermometer-water",
+        ).extend(
+            {
+                cv.Optional(CONF_DEVICE_CUSTOM_MESSAGE, default=0x42d8): cv.hex_int,
+                cv.Optional(
+                    CONF_FILTERS, default=[{"multiply": 0.1}]
+                ): sensor.validate_filters
+            }
+        ),
+        cv.Optional(CONF_DEVICE_IN_TEMP_WATER_OUTLET_ZONE2): sensor.sensor_schema(
+            unit_of_measurement=UNIT_CELSIUS,
+            accuracy_decimals=1,
+            device_class=DEVICE_CLASS_WATER,
+            state_class=STATE_CLASS_MEASUREMENT,
+            icon="mdi:thermometer-water",
+        ).extend(
+            {
+                cv.Optional(CONF_DEVICE_CUSTOM_MESSAGE, default=0x42d9): cv.hex_int,
+                cv.Optional(
+                    CONF_FILTERS, default=[{"multiply": 0.1}]
+                ): sensor.validate_filters
+            }
+        ),
     }
 )
 
 CUSTOM_SENSOR_KEYS = [
     CONF_DEVICE_WATER_TEMPERATURE,
     CONF_DEVICE_ROOM_HUMIDITY,
+    CONF_DEVICE_IN_FLOW_SENSOR_CALC,
+    CONF_DEVICE_IN_TEMP_WATER_OUTLET_ZONE1,
+    CONF_DEVICE_IN_TEMP_WATER_OUTLET_ZONE2,
 ]
 
 CONF_DEVICES = "devices"

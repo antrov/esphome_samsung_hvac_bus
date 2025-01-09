@@ -625,7 +625,7 @@ namespace esphome
             }
             case MessageNumber::VAR_in_heating_curve_shift_f: // unit = 'Celsius'
             {
-                double temp = (double)message.value / (double)10;
+                double temp = (double)((int16_t)message.value) / (double)10;
                 LOG_MESSAGE(VAR_in_heating_curve_shift_f, temp, source, dest);
                 target->set_heating_curve_shift(source, temp);
                 break;

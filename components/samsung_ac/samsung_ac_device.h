@@ -299,7 +299,7 @@ namespace esphome
         target_water_temperature->write_state_ = [this](float value)
         {
           ProtocolRequest request;
-          request.heating_curve_shift = value;
+          request.target_water_temp = value;
           publish_request(request);
         };
       };
