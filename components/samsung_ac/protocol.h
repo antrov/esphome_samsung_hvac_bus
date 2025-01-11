@@ -79,6 +79,7 @@ namespace esphome
             virtual void set_power(const std::string address, bool value) = 0;
             virtual void set_automatic_cleaning(const std::string address, bool value) = 0;
             virtual void set_water_heater_power(const std::string address, bool value) = 0;
+            virtual void set_threeway_valve_tank(const std::string address, bool value) = 0;
             virtual void set_room_temperature(const std::string address, float value) = 0;
             virtual void set_target_temperature(const std::string address, float value) = 0;
             virtual void set_water_outlet_target(const std::string address, float value) = 0;
@@ -107,6 +108,7 @@ namespace esphome
             optional<bool> power;
             optional<bool> automatic_cleaning;
             optional<bool> water_heater_power;
+            optional<bool> threeway_valve_tank;
             optional<Mode> mode;
             optional<WaterHeaterMode> waterheatermode;
             optional<float> target_temp;

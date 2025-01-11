@@ -156,6 +156,12 @@ namespace esphome
                                  { dev->update_water_heater_power(value); });
       }
 
+      void set_threeway_valve_tank(const std::string address, bool value) override
+      {
+        execute_if_device_exists(address, [value](Samsung_AC_Device *dev)
+                                 { dev->update_threeway_valve_tank(value); });
+      }
+
       void set_mode(const std::string address, Mode mode) override
       {
         execute_if_device_exists(address, [mode](Samsung_AC_Device *dev)

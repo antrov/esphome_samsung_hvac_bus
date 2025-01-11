@@ -422,6 +422,13 @@ namespace esphome
                 packet.messages.push_back(waterheaterpower);
             }
 
+            if (request.threeway_valve_tank)
+            {
+                MessageSet threeway_valve_tank(MessageNumber::ENUM_in_threeway_valve_tank);
+                threeway_valve_tank.value = request.threeway_valve_tank.value() ? 1 : 0;
+                packet.messages.push_back(threeway_valve_tank);
+            }
+
             if (request.target_temp)
             {
                 MessageSet targettemp(MessageNumber::VAR_in_temp_target_f);
@@ -651,6 +658,12 @@ namespace esphome
             {
                 LOG_MESSAGE(ENUM_in_water_heater_power, (double)message.value, source, dest);
                 target->set_water_heater_power(source, message.value != 0);
+                break;
+            }
+            case MessageNumber::ENUM_in_threeway_valve_tank:
+            {
+                LOG_MESSAGE(threeway_valve_tank, (double)message.value, source, dest);
+                target->set_threeway_valve_tank(source, message.value != 0);
                 break;
             }
             case MessageNumber::ENUM_in_operation_mode:

@@ -71,6 +71,7 @@ CONF_DEVICE_WATER_TARGET_TEMPERATURE = "water_target_temperature"
 CONF_DEVICE_POWER = "power"
 CONF_DEVICE_AUTOMATIC_CLEANING = "automatic_cleaning"
 CONF_DEVICE_WATER_HEATER_POWER = "water_heater_power"
+CONF_DEVICE_IN_THREEWAY_VALVE_TANK = "threeway_valve_tank"
 CONF_DEVICE_MODE = "mode"
 CONF_DEVICE_WATER_HEATER_MODE = "water_heater_mode"
 CONF_DEVICE_CLIMATE = "climate"
@@ -87,7 +88,6 @@ CONF_DEVICE_OUT_SENSOR_VOLTAGE = "outdoor_voltage"
 CONF_DEVICE_IN_FLOW_SENSOR_CALC = "flow"
 CONF_DEVICE_IN_TEMP_WATER_OUTLET_ZONE1 = "water_outlet_zone1_temperature"
 CONF_DEVICE_IN_TEMP_WATER_OUTLET_ZONE2 = "water_outlet_zone2_temperature"
-CONF_DEVICE_IN_3WAY_VALVE = "3way_valve"
 
 
 CONF_CAPABILITIES = "capabilities"
@@ -245,6 +245,9 @@ DEVICE_SCHEMA = cv.Schema(
             Samsung_AC_Switch
         ),
         cv.Optional(CONF_DEVICE_WATER_HEATER_POWER): switch.switch_schema(
+            Samsung_AC_Switch
+        ),
+        cv.Optional(CONF_DEVICE_IN_THREEWAY_VALVE_TANK): switch.switch_schema(
             Samsung_AC_Switch
         ),
         cv.Optional(CONF_DEVICE_MODE): SELECT_MODE_SCHEMA,
@@ -477,6 +480,10 @@ async def to_code(config):
             CONF_DEVICE_WATER_HEATER_POWER: (
                 switch.new_switch,
                 var_dev.set_water_heater_power_switch,
+            ),
+            CONF_DEVICE_IN_THREEWAY_VALVE_TANK: (
+                switch.new_switch,
+                var_dev.set_threeway_valve_tank_switch,
             ),
             CONF_DEVICE_ROOM_TEMPERATURE: (
                 sensor.new_sensor,

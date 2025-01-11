@@ -119,6 +119,7 @@ namespace esphome
       Samsung_AC_Switch *power{nullptr};
       Samsung_AC_Switch *automatic_cleaning{nullptr};
       Samsung_AC_Switch *water_heater_power{nullptr};
+      Samsung_AC_Switch *threeway_valve_tank{nullptr};
       Samsung_AC_Mode_Select *mode{nullptr};
       Samsung_AC_Water_Heater_Mode_Select *waterheatermode{nullptr};
       Samsung_AC_Climate *climate{nullptr};
@@ -249,6 +250,17 @@ namespace esphome
         };
       }
 
+      void set_threeway_valve_tank_switch(Samsung_AC_Switch *switch_)
+      {
+        threeway_valve_tank = switch_;
+        threeway_valve_tank->write_state_ = [this](bool value)
+        {
+          ProtocolRequest request;
+          request.threeway_valve_tank = value;
+          publish_request(request);
+        };
+      }
+
       void set_mode_select(Samsung_AC_Mode_Select *select)
       {
         mode = select;
@@ -353,6 +365,7 @@ namespace esphome
       optional<bool> _cur_power;
       optional<bool> _cur_automatic_cleaning;
       optional<bool> _cur_water_heater_power;
+      optional<bool> _cur_threeway_valve_tank;
       optional<Mode> _cur_mode;
       optional<WaterHeaterMode> _cur_water_heater_mode;
 
@@ -379,6 +392,13 @@ namespace esphome
         _cur_water_heater_power = value;
         if (water_heater_power != nullptr)
           water_heater_power->publish_state(value);
+      }
+
+      void update_threeway_valve_tank(bool value)
+      {
+        _cur_threeway_valve_tank = value;
+        if (threeway_valve_tank != nullptr)
+          threeway_valve_tank->publish_state(value);
       }
 
       void update_mode(Mode value)
