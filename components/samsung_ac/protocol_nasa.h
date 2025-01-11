@@ -72,6 +72,7 @@ namespace esphome
             ENUM_in_operation_power = 0x4000,
             ENUM_in_operation_automatic_cleaning = 0x4111,
             ENUM_in_water_heater_power = 0x4065,
+            ENUM_in_threeway_valve_tank = 0x4067,
             ENUM_in_operation_mode = 0x4001,
             ENUM_in_water_heater_mode = 0x4066,
             ENUM_in_fan_mode = 0x4006, // Did not exists in xml...only in Remocon.dll code

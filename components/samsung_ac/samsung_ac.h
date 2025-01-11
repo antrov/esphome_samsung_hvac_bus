@@ -144,6 +144,12 @@ namespace esphome
         execute_if_device_exists(address, [value](Samsung_AC_Device *dev)
                                  { dev->update_power(value); });
       }
+
+      void set_threeway_valve_tank(const std::string address, bool value) override
+      {
+        execute_if_device_exists(address, [value](Samsung_AC_Device *dev)
+                                 { dev->update_threeway_valve_tank(value); });
+      }
       void set_automatic_cleaning(const std::string address, bool value) override
       {
         execute_if_device_exists(address, [value](Samsung_AC_Device *dev)

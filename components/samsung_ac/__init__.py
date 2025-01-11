@@ -1,6 +1,6 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.components import uart, sensor, switch, select, number, climate
+from esphome.components import uart, sensor, switch, select, number, climate, binary_sensor
 from esphome.const import (
     CONF_ID,
     DEVICE_CLASS_TEMPERATURE,
@@ -87,7 +87,7 @@ CONF_DEVICE_OUT_SENSOR_VOLTAGE = "outdoor_voltage"
 CONF_DEVICE_IN_FLOW_SENSOR_CALC = "flow"
 CONF_DEVICE_IN_TEMP_WATER_OUTLET_ZONE1 = "water_outlet_zone1_temperature"
 CONF_DEVICE_IN_TEMP_WATER_OUTLET_ZONE2 = "water_outlet_zone2_temperature"
-CONF_DEVICE_IN_3WAY_VALVE = "3way_valve"
+CONF_DEVICE_IN_THREEWAY_VALVE_TANK = "threeway_valve_tank"
 
 
 CONF_CAPABILITIES = "capabilities"
@@ -257,6 +257,7 @@ DEVICE_SCHEMA = cv.Schema(
         cv.Optional(CONF_DEVICE_WATER_TEMPERATURE): temperature_sensor_schema(0x4237),
         cv.Optional(CONF_DEVICE_ROOM_HUMIDITY): humidity_sensor_schema(0x4038),
         cv.Optional(CONF_DEVICE_HEATING_CURVE_SHIFT): NUMBER_SCHEMA,
+        cv.Optional(CONF_DEVICE_IN_THREEWAY_VALVE_TANK): binary_sensor.BINARY_SENSOR_SCHEMA,
         cv.Optional(
             CONF_DEVICE_OUT_CONTROL_WATTMETER_ALL_UNIT_ACCUM
         ): sensor.sensor_schema(
@@ -498,6 +499,10 @@ async def to_code(config):
             CONF_DEVICE_OUT_CONTROL_WATTMETER_ALL_UNIT_ACCUM: (
                 sensor.new_sensor,
                 var_dev.set_outdoor_instantaneous_power_sensor,
+            ),
+            CONF_DEVICE_IN_THREEWAY_VALVE_TANK: (
+                binary_sensor.new_binary_sensor,
+                var_dev.set_threeway_valve_tank,
             ),
             CONF_DEVICE_OUT_CONTROL_WATTMETER_1W_1MIN_SUM: (
                 sensor.new_sensor,

@@ -6,6 +6,7 @@
 #include "esphome/core/helpers.h"
 #include "esphome/components/switch/switch.h"
 #include "esphome/components/sensor/sensor.h"
+#include "esphome/components/binary_sensor/binary_sensor.h"
 #include "esphome/components/select/select.h"
 #include "esphome/components/number/number.h"
 #include "esphome/components/climate/climate.h"
@@ -124,6 +125,7 @@ namespace esphome
       Samsung_AC_Climate *climate{nullptr};
       std::map<uint16_t, sensor::Sensor *> custom_sensor_map;
       float room_temperature_offset{0};
+      binary_sensor::BinarySensor *threeway_valve_tank{nullptr};
 
       template <typename SwingType>
       void update_swing(SwingType &swing_variable, uint8_t mask, bool value)
@@ -348,6 +350,17 @@ namespace esphome
       {
         if (heating_curve_shift != nullptr)
           heating_curve_shift->publish_state(value);
+      }
+
+      void set_threeway_valve_tank(binary_sensor::BinarySensor *sensor)
+      {
+        threeway_valve_tank = sensor;
+      }
+
+      void update_threeway_valve_tank(float value)
+      {
+        if (threeway_valve_tank != nullptr)
+          threeway_valve_tank->publish_state(value);
       }
 
       optional<bool> _cur_power;

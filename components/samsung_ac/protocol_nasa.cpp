@@ -630,6 +630,12 @@ namespace esphome
                 target->set_heating_curve_shift(source, temp);
                 break;
             }
+            case MessageNumber::ENUM_in_threeway_valve_tank:
+            {
+                LOG_MESSAGE(ENUM_in_threeway_valve_tank, (double)message.value, source, dest);
+                target->set_threeway_valve_tank(source, message.value == 1);
+                break;
+            }
             case MessageNumber::ENUM_in_state_humidity_percent:
             {
                 LOG_MESSAGE(ENUM_in_state_humidity_percent, (double)message.value, source, dest);
