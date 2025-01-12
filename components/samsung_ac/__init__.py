@@ -257,7 +257,9 @@ DEVICE_SCHEMA = cv.Schema(
         cv.Optional(CONF_DEVICE_WATER_TEMPERATURE): temperature_sensor_schema(0x4237),
         cv.Optional(CONF_DEVICE_ROOM_HUMIDITY): humidity_sensor_schema(0x4038),
         cv.Optional(CONF_DEVICE_HEATING_CURVE_SHIFT): NUMBER_SCHEMA,
-        cv.Optional(CONF_DEVICE_IN_THREEWAY_VALVE_TANK): binary_sensor.BINARY_SENSOR_SCHEMA,
+        cv.Optional(CONF_DEVICE_IN_THREEWAY_VALVE_TANK): binary_sensor.binary_sensor_schema(
+            icon="mdi:valve",
+        ),
         cv.Optional(
             CONF_DEVICE_OUT_CONTROL_WATTMETER_ALL_UNIT_ACCUM
         ): sensor.sensor_schema(
